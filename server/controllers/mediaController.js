@@ -9,6 +9,8 @@ var spotify = new SpotifyWebApi({
   });
 
 
+
+
 class MediaController {
 
     static async searchMedia(req, res, next){
