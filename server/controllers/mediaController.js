@@ -1,35 +1,22 @@
 const axios = require('axios')
-const SpotifyWebApi = require('spotify-web-api-node')
-
-// const spotify = new spotifyWebAPI()
-
-var spotify = new SpotifyWebApi({
-    clientId: '881d110a4f024e9ab7f1342ddeb84554',
-    clientSecret: '263e57667d3e49a7a31ae45e853434be'
-  });
-
-
-
 
 class MediaController {
 
-    static async searchMedia(req, res, next){
+    static async searchMedia(req, res){
         try {
-            
-            let data = await spotify.searchTracks(`artist:${req.query.q}`)
-
+            console.log(req.query.q);
+            let {data} = await axios({
+                url : `https://api.deezer.com/search?q=${req.query.q}`
+            })
             console.log('data: ', data);
-
-            res.send(data)
-
+            res.status(200).json(data)
         } catch (error) {
-
-            res.send(error)
             console.log('error: ', error);
-            
+            res.status(500).json(error)
         }
     }
 
 }
 
 module.exports =  MediaController
+

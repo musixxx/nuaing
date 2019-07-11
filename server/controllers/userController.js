@@ -1,10 +1,5 @@
 const User = require('../models/user')
-const {
-    generateToken
-} = require('../helpers/jwt')
-const {
-    compare
-} = require('../helpers/bcrypt')
+const Helper = require('../helpers/helper')
 
 class UserController {
     static signup(req, res) {
@@ -18,6 +13,7 @@ class UserController {
                 res.status(201).json(data)
             })
             .catch(err => {
+                console.log('err: ', err);
                 res.status(500).json({
                     message: 'Internal Server Error'
                 })
@@ -28,18 +24,18 @@ class UserController {
     static signin(req, res) {
         User.findOne({
                 where: {
-                    username: req.body.username
+                    email: req.body.email
                 }
             })
             .then(user => {
                 if (user) {
-                    if (compare(req.body.password, user.password)) {
+                    if (Helper.comparePassword(req.body.password, user.password)) {
                         let payload = {
                             id: user.id,
                             username: user.username,
                             email: user.email
                         }
-                        let genToken = generateToken(payload)
+                        let genToken = Helper.generateJWT(payload)
                         res.status(200).json({
                             token: genToken
                         })
@@ -55,6 +51,7 @@ class UserController {
                 }
             })
             .catch(err => {
+                console.log('err: ', err);
                 res.status(500).json(err)
             })
     }
