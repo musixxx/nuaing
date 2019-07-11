@@ -2,7 +2,7 @@ const axios = require('axios')
 
 class MediaController {
 
-    static async searchMedia(req, res, next){
+    static async searchMedia(req, res){
         try {
             console.log(req.query.q);
             let {data} = await axios({
