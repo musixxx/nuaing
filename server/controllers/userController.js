@@ -1,8 +1,10 @@
 const User = require('../models/user')
 const {
-    compare,
     generateToken
 } = require('../helpers/jwt')
+const {
+    compare
+} = require('../helpers/bcrypt')
 
 class UserController {
     static signup(req, res) {
