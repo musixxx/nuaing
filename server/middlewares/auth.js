@@ -1,46 +1,35 @@
-const jwT = require('../helpers/jwt')
-const {
-    Todo
-} = require('../models')
-const jwt = require('jsonwebtoken')
-
-function authentication(req, res, next) {
-    if (req.headers.hasOwnProperty('token')) {
-        if (jwT.verifyToken(req.headers.token)) {
-            next()
-        } else {
-            res.status(401).json({
-                message: 'Invalid'
-            })
-        }
-    } else {
-        res.status(403).json({
-            message: 'UnAuthorize process'
-        })
-    }
-}
-
-function authorization(req, res, next) {
-    const decode = jwt.decode(req.headers.token)
-    Todo.findByPk(req.params.id)
-        .then(todo => {
-            if (todo.UserId == decode.id) {
-                next()
-            } else {
-                res.status(403).json({
-                    message: 'Forbiden Acces'
-                })
-            }
-        })
-        .catch(err => {
-            res.status(403).json({
-                message: 'Forbiden Acces'
-            })
-        })
-
-}
+const Helper = require('../helpers/helper')
+const x = require('')
+const User = require('')
 
 module.exports = {
-    authentication,
-    authorization
+    authentication : (req, res, next) => {
+        try {
+            console.log(req.headers.access_token, 'ini token di middleware')
+            const decoded = Helper.verifyJWT(req.headers.access_token);
+
+            req.loggedUser = decoded
+
+            console.log(req.loggedUser)
+            
+            next()
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    },
+    authorization : (req, res, next) => {
+        x.findOne({
+            _id : req.body.id
+        })
+            .then(( data ) => {
+                if(req.decode.id === data.UserId){
+                    next()
+                } else {
+                    next(error)
+                }
+            })
+            .catch(err => {
+                res.status(401).json({message : 'not authorized'})
+            })
+    }
 }
