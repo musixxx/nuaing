@@ -83,7 +83,7 @@ function searchArtist(artist){
 
   Url.get(`/api/media?q=${artist}`)
   .then(({ data }) => {
-    console.log(data.tracklist);
+    console.log('iniiiiii',data.tracklist);
     $('#searchResult').empty()
     let found = `
     <div class="row" style="padding-top: 5vh">
@@ -104,16 +104,16 @@ function searchArtist(artist){
 
     </div>
     `
-    console.log(data.picture_medium);
+    $('#searchResult').append(found)
     data.tracklist.forEach((vin, idx) => {
+      console.log(vin);
       let player = `
       <div style="padding : 10px 0;">
-        <iframe scrolling="no" frameborder="0" allowTransparency="true" src="https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=true&width=700&height=350&color=ff0000&layout=dark&size=medium&type=tracks&id=${vin.id}&app_id=1" width="700" height="350"></iframe>        
+        <iframe scrolling="no" frameborder="0" allowTransparency="true" src="https://www.deezer.com/plugins/player?format=classic&autoplay=false&playlist=true&width=700&height=350&color=ff0000&layout=dark&size=medium&type=tracks&id=${vin.id}&app_id=1" width="700" height="90"></iframe>        
       </div>
       `
       $('#artist-tracklist').append(player)
     })
-    $('#searchResult').append(found)
     $('#result').show()
 
   })
