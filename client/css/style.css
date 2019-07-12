@@ -1,3 +1,23 @@
+p,h1,h2,h3,h4,h5,h6 {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+h3 {
+  font-weight: 700;
+}
+
+h4 {
+  font-weight: 700;
+}
+
 .jumbotron {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -65,4 +85,9 @@ footer p {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.result-img-art img {
+  border-radius: 50%;
+  max-width : 500px;
 }

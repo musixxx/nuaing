@@ -78,11 +78,42 @@ Url.get('api/events')
 
 $('#formSearchArtist').submit(function(e){
   e.preventDefault()
-  let artistName = $('#formSearchArtist').serializeArray()[0].value
+  let artistName = $('#searchArtist').val()
   console.log(artistName)
   searchArtist(artistName)
 })
 
 function searchArtist(artist){
+
   Url.get(`/api/media?q=${artist}`)
+  .then(({ data }) => {
+    console.log(data);
+    $('#searchResult').empty()
+    let found = `
+    <div class="row" style="padding-top: 5vh">
+      <div class="col-sm-4 result-img-art ">
+        <img src="${data.picture_xl}" class="card-img-top" alt="${data.name}" id="img-${data.name}">
+      </div>
+      <div class="col-sm-8">
+        <div style="padding-top: 8vh; margin-left: 5vh">
+          <h1 class="card-title">${data.name}</h1>
+          <h3 class="text-muted" style="margin-left:5px">${data.type}</h3>
+        </div>
+      </div>
+
+      <div class="track">
+        <div class="container tracklist">
+        <p> kholis anjing</p>
+        </div>
+      </div>
+    </div>
+    `
+    console.log(data.picture_medium);
+    $('#searchResult').append(found)
+    $('#result').show()
+
+  })
+  .catch((err) => {
+
+  })
 }
