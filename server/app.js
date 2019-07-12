@@ -21,7 +21,8 @@ mongoose.connect('mongodb://localhost/musixxx', {useNewUrlParser : true}, (err) 
 
 app.use('/', route)
 
-app.use(function(err){
+app.use(function(err, req, res, next){
+    console.log('error handling');
     console.log('err: ', err);
 })
 

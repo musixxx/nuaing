@@ -16,11 +16,9 @@ class UserController {
     }
 
     static signin(req, res, next) {
-        User.findOne({
-                where: {
-                    email: req.body.email
-                }
-            })
+        User.findOne({    
+            email: req.body.email
+        })
             .then(user => {
                 if (user) {
                     if (Helper.comparePassword(req.body.password, user.password)) {
