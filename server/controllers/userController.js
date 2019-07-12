@@ -28,6 +28,7 @@ class UserController {
                             email: user.email
                         }
                         let genToken = Helper.generateJWT(payload)
+
                         res.status(200).json({
                             token: genToken
                         })
