@@ -2,7 +2,7 @@ const axios = require('axios')
 
 class MediaController {
 
-    static async searchMedia(req, res){
+    static async searchMedia(req, res, next){
         try {
             console.log(req.query.q);
             let response = await axios({
@@ -26,9 +26,13 @@ class MediaController {
             console.log('arrayTracks: ', arrayTracks);
 
             
-
             arrayTracks.forEach(element => {
-                arr.push(element.preview)
+                let track = {}
+                track.artist = result.detail.name
+                track.id = element.id
+                track.title = element.title
+                track.preview = element.preview
+                arr.push(track)
             });
 
             console.log(arr);
