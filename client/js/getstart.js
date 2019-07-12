@@ -1,6 +1,16 @@
-if (localStorage.token) {
-  $("#getting-started").hide();
-  $("#home").show();
+$(document).ready(function(){
+  checkSignIn()
+})
+
+
+function checkSignIn(){
+  if (localStorage.token) {
+    $("#getting-started").hide();
+    $("#home").show();
+  } else {
+    $("#getting-started").show();
+    $("#home").hide();
+  }
 }
 
 $("#btn-register").click(function(){

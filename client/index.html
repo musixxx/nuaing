@@ -11,7 +11,7 @@
 </head>
 
 <body>
-
+	<!-- LOGIN PAGE -->
 	<div class="text-center" id="getting-started" style="margin: auto">
 		<div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 100px;">
 			<button type="button" class="btn btn-secondary" id="btn-login">Login</button>
@@ -40,6 +40,7 @@
 		</form>
 	</div>
 
+	<!-- HOME PAGE -->
 	<div id="home" style="display: none">
 		<header>
 			<div class="bg-dark collapse" id="navbarHeader" style="">
@@ -92,9 +93,12 @@
 						<h3>Find Artist</h3>
 					</div>
 					<div class="row" id="find-artist">
-						<form class="text-center" style="padding: 0 15px">
+						<form id="formSearchArtist" class="text-center" style="padding: 0 15px">
 							<input class="form-control form-control-lg" type="text" placeholder="Find Artist" style="min-width: 85vw">
 						</form>
+					</div>
+					<div id="resultArtist">
+
 					</div>
 					
 				</div>
@@ -106,7 +110,7 @@
 						<h3>Upcoming Events Near You</h3>
 					</div>
 					<div class="row" id="get-result">
-	
+
 					</div>
 					
 				</div>
@@ -124,6 +128,10 @@
 			</div>
 		</footer>
 	</div>
+
+	<!-- EVENT PAGE -->
+
+	<!-- ARTIST PAGE -->
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
