@@ -7,8 +7,8 @@ const route = require('./routes')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
-const port = process.env.PORT || 3000
-
+const port = process.env.PORT
+const morgan = require('morgan');
 
 app.use(cors())
 app.use(express.urlencoded({ extended:false }))
