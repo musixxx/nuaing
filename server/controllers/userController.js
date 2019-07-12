@@ -2,7 +2,7 @@ const User = require('../models/user')
 const Helper = require('../helpers/helper')
 
 class UserController {
-    static signup(req, res) {
+    static signup(req, res, next) {
         let option = {
             username: req.body.username,
             password: req.body.password,
@@ -12,15 +12,10 @@ class UserController {
             .then((data) => {
                 res.status(201).json(data)
             })
-            .catch(err => {
-                console.log('err: ', err);
-                res.status(500).json({
-                    message: 'Internal Server Error'
-                })
-            })
+            .catch(next)
     }
 
-    static signin(req, res) {
+    static signin(req, res, next) {
         User.findOne({
                 where: {
                     email: req.body.email
@@ -40,23 +35,16 @@ class UserController {
                             token: genToken
                         })
                     } else {
-                        res.status(404).json({
-                            message: 'invalid username/password'
-                        })
+                        next({code: 404, message: 'invalid username/password'})
                     }
                 } else {
-                    res.status(404).json({
-                        message: 'invalid username/password'
-                    })
+                    next({code: 404, message: 'invalid username/password'})
                 }
             })
-            .catch(err => {
-                console.log('err: ', err);
-                res.status(500).json(err)
-            })
+            .catch(next)
     }
 
-    static googleSignin(req, res) {
+    static googleSignin(req, res, next) {
         
         let googleToken = req.body.token;
 
@@ -76,7 +64,7 @@ class UserController {
           })
             .then((user) => {
                 if(user){   
-                    console.log('google got to signin')            
+                    console.log('google go to signin')            
                     req.body = {
                         email : user.email,
                         password : user.email
@@ -87,9 +75,7 @@ class UserController {
                     })
                       .then(user => {
                         if (!user) {
-                          res.status(404).json({
-                            msg: "not found"
-                          });
+                            next({code: 404, message: 'invalid username/password'})
                         } else {
                           
                           if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -102,18 +88,11 @@ class UserController {
                             console.log(token);
                             res.status(200).json({ access_token : token, username: payload.username });
                           } else {
-                            res.status(404).json({
-                              msg: "not found"
-                            });
+                            next({code: 404, message: 'invalid username/password'})
                           }
                         }
                       })
-                      .catch(err => {
-                        console.log('err: ', err);
-                        res.status(500).json({
-                          msg: "internal server error"
-                        });
-                      });
+                      .catch(next)
     
                     
                 } else {
@@ -136,22 +115,17 @@ class UserController {
                       })
                       .catch(err => {
                         console.log(err);
-                        
                         if(err.errors.email){
-                          res.status(400).json({msg : err.errors.email.reason})
+                            next({code: 400, message: err.errors.email.reason})
                         } else {
-                          res.status(500).json({
-                            msg: "internal server error"
-                          });
+                            next(err)
                         }
                       });
                 }
             })
-            .catch(err => {
-                console.log(err)
-            })
+            .catch(next)
         }
-        verify().catch(console.error);
+        verify().catch(next);
       }
     
 }

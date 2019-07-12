@@ -1,5 +1,3 @@
-
-
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     require('dotenv').config();
 }
@@ -22,6 +20,10 @@ mongoose.connect('mongodb://localhost/musixxx', {useNewUrlParser : true}, (err) 
 });
 
 app.use('/', route)
+
+app.use(function(err){
+    console.log('err: ', err);
+})
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
