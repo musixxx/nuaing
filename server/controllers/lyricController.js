@@ -2,38 +2,41 @@ const mxmatch = require('../helpers/musixmatch')
 
 class LyricController {
 
-    static searchTrackId(req, res, next){
-        let url =  `/track.search?q_artist=${req.query.artist}&q_track=${req.query.track}&apikey=${process.env.MUSIXMATCH_API_KEY}`
-        let encoded = encodeURI(url)
-        console.log(encoded)
+    static async searchTrackId(req, res, next){
+        try {
+            let url =  `/track.search?q_artist=${req.query.artist}&q_track=${req.query.track}&apikey=${process.env.MUSIXMATCH_API_KEY}`
+            let encoded = encodeURI(url)
+            console.log(encoded)
+            // console.log('data: ', data.message.body.track_list[0].track.track_id);
 
-            mxmatch({
-                url : encoded,
-                method: 'GET'
-            })
-                .then(({ data }) => {
-                    console.log('data: ', data);
-                    
-                    res.status(200).json(data)
+            let response =  await mxmatch({
+                    url : encoded,
+                    method: 'GET'
                 })
-                .catch(next)
+
+                let idTrack = response.data.message.body.track_list[0].track.track_id
+                    
+                url =  `/track.lyrics.get?track_id=${idTrack}&apikey=${process.env.MUSIXMATCH_API_KEY}`
+                encoded = encodeURI(url)
+                console.log(encoded)
+                
+                let response2 = await mxmatch({
+                    url : encoded,
+                    method: 'GET'
+                })
+
+                console.log(response2.data.message.body.lyrics.lyrics_body);
+
+                let lyrictResult = response2.data.message.body.lyrics.lyrics_body
+
+                res.status(200).json({lyric : lyrictResult})
+        } catch (error) {
+            next(error)
+        }
+        
+
     }
 
-    static searchLyric(req, res, next){
-        let url =  `/track.lyrics.get?track_id=${req.query.id}&apikey=${process.env.MUSIXMATCH_API_KEY}`
-        let encoded = encodeURI(url)
-        console.log(encoded)
-            mxmatch({
-                url : encoded,
-                method: 'GET'
-            })
-                .then(({ data }) => {
-                    console.log('data: ', data.message.body);
-                    
-                    res.status(200).json(data)
-                })
-                .catch(next)
-    }
 }
 
 module.exports =  LyricController

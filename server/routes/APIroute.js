@@ -9,7 +9,7 @@ router.get('/events/search', EventController.searchEvent)
 
 router.get('/media', MediaController.searchMedia)
 
-router.get('/lyrics', LyricController.searchLyric)
+// router.get('/lyrics', LyricController.searchLyric)
 router.get('/lyrics/tracks', LyricController.searchTrackId)
 
 module.exports = router
