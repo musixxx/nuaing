@@ -18,7 +18,6 @@ class UserController {
                     message: 'Internal Server Error'
                 })
             })
-
     }
 
     static signin(req, res) {
@@ -53,7 +52,6 @@ class UserController {
                 res.status(500).json(err)
             })
     }
-
 }
 
 
