@@ -6,10 +6,10 @@ class MediaController {
         try {
             console.log(req.query.q);
             let {data} = await axios({
-                url : `https://api.deezer.com/search?q=${req.query.q}`
+                url : `https://api.deezer.com/search?q="${req.query.q}"`
             })
             console.log('data: ', data);
-            res.status(200).json(data)
+            res.status(200).json(data.data[0].artist)
 
         } catch(err){
             next(err)
