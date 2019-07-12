@@ -1,3 +1,7 @@
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+	require('dotenv').config();
+}
+
 const axios = require('axios')
 // Token in dot env
 const Url = axios.create({
