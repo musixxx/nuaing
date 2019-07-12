@@ -16,7 +16,7 @@ class UserController {
     }
 
     static signin(req, res, next) {
-        User.findOne({    
+        User.findOne({
             email: req.body.email
         })
             .then(user => {
