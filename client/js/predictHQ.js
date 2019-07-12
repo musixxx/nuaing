@@ -4,7 +4,14 @@ const Url = axios.create({
 
 // Sign In
 
-Url.post('/users/signin', req.body)
+Url.post({
+  url :'/users/signin',
+  method : "POST",
+  data : $("#form-signin").submit(function(event) {
+            console.log( $( this ).serializeArray());
+            event.preventDefault();
+    }) 
+})
   .then((found) => {
     console.log(found);
   })
@@ -14,7 +21,7 @@ Url.post('/users/signin', req.body)
 
 // Events
 
-Url.get('/api/events')
+Url.get('api/events')
   .then((result) => {
     // console.log('balik lagi ke jquery');
     const event = result.data.data
