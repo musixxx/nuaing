@@ -2,6 +2,18 @@ const Url = axios.create({
   baseURL: 'http://localhost:3000/'
 });
 
+// Sign In
+
+Url.post('/users/signin', req.body)
+  .then((found) => {
+    console.log(found);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
+// Events
+
 Url.get('/api/events')
   .then((result) => {
     // console.log('balik lagi ke jquery');
@@ -16,7 +28,7 @@ Url.get('/api/events')
             <span class="card-link">${val.location.city}</span>
 
             <div class="card-info artist">
-              
+
             </div>
 
             <div class="card-info time">
