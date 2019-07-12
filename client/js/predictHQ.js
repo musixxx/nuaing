@@ -2,19 +2,21 @@ const Url = axios.create({
   baseURL: 'http://localhost:3000'
 });
 
-$("#form-signin").submit(function(event) {
+$("#form-signin").submit(function (event) {
   event.preventDefault();
-  let datasignin = $( this ).serializeArray()
+  let datasignin = $(this).serializeArray()
   console.log(datasignin)
   Url({
-    url :'/users/signin',
-    method : "POST", 
-    data : {
-      email : datasignin[0].value,
-      password : datasignin[1].value
-    }
-  })
-    .then(({data}) => {
+      url: '/users/signin',
+      method: "POST",
+      data: {
+        email: datasignin[0].value,
+        password: datasignin[1].value
+      }
+    })
+    .then(({
+      data
+    }) => {
       console.log('balik ke jquery');
       console.log(data);
       localStorage.setItem('token', data.token)
@@ -76,20 +78,22 @@ Url.get('api/events')
 
 // Artist Search
 
-$('#formSearchArtist').submit(function(e){
+$('#formSearchArtist').submit(function (e) {
   e.preventDefault()
   let artistName = $('#searchArtist').val()
   console.log(artistName)
   searchArtist(artistName)
 })
 
-function searchArtist(artist){
+function searchArtist(artist) {
 
   Url.get(`/api/media?q=${artist}`)
-  .then(({ data }) => {
-    console.log(data);
-    $('#searchResult').empty()
-    let found = `
+    .then(({
+      data
+    }) => {
+      console.log(data);
+      $('#searchResult').empty()
+      let found = `
     <div class="row" style="padding-top: 5vh">
       <div class="col-sm-4 result-img-art ">
         <img src="${data.picture_xl}" class="card-img-top" alt="${data.name}" id="img-${data.name}">
@@ -108,12 +112,64 @@ function searchArtist(artist){
       </div>
     </div>
     `
-    console.log(data.picture_medium);
-    $('#searchResult').append(found)
-    $('#result').show()
+      console.log(data.picture_medium);
+      $('#searchResult').append(found)
+      $('#result').show()
 
-  })
-  .catch((err) => {
+    })
+    .catch((err) => {
 
-  })
+    })
+}
+
+
+
+function onSignIn(googleUser) {
+  if (!localStorage.getItem('token')) {
+    const id_token = googleUser.getAuthResponse().id_token
+    $.post('http://localhost:3000/users/g-sigin', {
+        token: id_token
+      })
+      .done(response => {
+        localStorage.setItem('token', id_token)
+        localStorage.setItem('name', response.name)
+        localStorage.setItem('email', response.email)
+        localStorage.setItem('picture', response.picture)
+      })
+      .fail(err => {
+        console.log(err)
+      })
+  }
+  const profile = googleUser.getBasicProfile();
+
+
+  $('.g-signin2').hide()
+  $("#user").show()
+  $(".container").show()
+
+  let html = `<div class="navbar-brand">${profile.getName()}</div>
+              <img src="${profile.getImageUrl()}" alt="userImage" style="border-radius: 8px; width: 50px;">
+              <a href="#" onclick="signOut();" class="m-2 text-danger"><i class="fas fa-power-off"></i></a>`
+
+  $('#user').empty()
+  $('#user').append(html)
+
+  let welcome = `<h2>Hi ${profile.getName()}!</h2>`
+
+  $('#welcome').empty()
+  $('#welcome').append(welcome)
+
+  star()
+}
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+    localStorage.clear()
+  });
+
+  $("#user").hide()
+  $(".container").hide()
+  $('.g-signin2').show()
 }
